@@ -5,11 +5,11 @@ from sqlalchemy import and_
 
 
 def get_runs(db: Session):
-    now = datetime.now()
+    now = datetime.now() - timedelta(hours=2)
     return db.query(Run).filter(and_(Run.scheduled_end_time > now, Run.vehicle_id != 38)).all()
 
 def get_runs_by_route(db: Session, run_name: str):
-    now = datetime.now()
+    now = datetime.now() - timedelta(hours=2)
     return db.query(Run).filter(and_(Run.scheduled_end_time > now, Run.vehicle_id != 38, Run.name.startswith(run_name))).all()
 
 
