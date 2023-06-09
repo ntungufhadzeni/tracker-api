@@ -12,5 +12,4 @@ class Run(Base):
     scheduled_start_time = Column(DateTime)
     scheduled_end_time = Column(DateTime)
     vehicle_id = Column(Integer)
-    driver_id = Column(Integer)
     

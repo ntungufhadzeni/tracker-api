@@ -44,33 +44,27 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/api/v1")
-def home():
-    return {"message": "Welcome to Tracker app"}
-
 
 @app.get("/api/v1/runs", response_model=list[schemas.Run])
-async def get_runs(db: Session = Depends(get_db)):
-    runs = crud.get_runs(db)
+async def get_all_runs(db: Session = Depends(get_db)):
+    runs = crud.get_all_runs(db)
     for run in runs:
         run.scheduled_start_time = run.scheduled_start_time + timedelta(hours=2)
         run.scheduled_end_time = run.scheduled_end_time + timedelta(hours=2)
         run.vehicle_id = rename_vehicle(run.vehicle_id)
         run.tracker_id = get_tracker_id(run.vehicle_id)
-        run.vehicle_latitude, run.vehicle_longitude = get_vehicle_position(run.tracker_id)
+        run.latitude, run.longitude = get_vehicle_position(run.tracker_id)
     return runs
 
 
-@app.get("/api/v1/runs/{route}", response_model=list[schemas.Run])
-async def get_runs_by_route(route: str, db: Session = Depends(get_db)):
-    runs = crud.get_runs_by_route(db, route)
+@app.get("/api/v1/runs/{name}", response_model=list[schemas.Run])
+async def get_runs_by_run_name(name: str, db: Session = Depends(get_db)):
+    name = ' '.join(name.split("-"))
+    runs = crud.get_runs_by_run_name(db, name)
     for run in runs:
         run.scheduled_start_time = run.scheduled_start_time + timedelta(hours=2)
         run.scheduled_end_time = run.scheduled_end_time + timedelta(hours=2)
         run.vehicle_id = rename_vehicle(run.vehicle_id)
         run.tracker_id = get_tracker_id(run.vehicle_id)
-        run.vehicle_latitude, run.vehicle_longitude = get_vehicle_position(run.tracker_id)
+        run.latitude, run.longitude = get_vehicle_position(run.tracker_id)
     return runs
-
-
-
