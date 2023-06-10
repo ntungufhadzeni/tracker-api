@@ -1,13 +1,20 @@
-# base image
+# Base image
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 
-# set working directory
+# Set working directory
 WORKDIR /app
 
+# Copy requirements file
 COPY requirements.txt .
 
+# Install dependencies
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
+# Copy the application code
 COPY ./app .
 
-CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "80"]
+# Expose the port
+EXPOSE 8000
+
+# Start the server
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
