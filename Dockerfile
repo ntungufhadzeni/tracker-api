@@ -1,5 +1,7 @@
 # Base image
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+FROM tiangolo/uvicorn-gunicorn:python3.11-slim
+
+RUN apt-get update && apt-get install -y netcat
 
 # Set working directory
 WORKDIR /app
@@ -13,8 +15,3 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 # Copy the application code
 COPY ./app .
 
-# Expose the port
-EXPOSE 8000
-
-# Start the server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]

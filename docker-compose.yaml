@@ -1,25 +1,31 @@
-version: "3"
+version: "3.8"
 
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 80
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app-http.rule=Host(`leetoapp.thenakedscientists.co.za`)"
-      - "traefik.http.routers.app-http.tls=true"
-      - "traefik.http.routers.app-http.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.fastapi.rule=Host(`leetoapp.thenakedscientists.co.za`)"
+      - "traefik.http.routers.fastapi.tls=true"
+      - "traefik.http.routers.fastapi.tls.certresolver=letsencrypt"
 
   traefik:
-    image: traefik:v2.3
+    build:
+      context: .
+      dockerfile: Dockerfile.traefik
     ports:
       - "80:80"
       - "443:443"
     restart: always
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "$PWD/traefik/traefik.toml:/etc/traefik/traefik.toml"
-      - "traefik-public-certificates:/certificates"
-
+      - "./traefik.toml:/etc/traefik/traefik.toml"
+      - "./traefik-public-certificates:/certificates"
 volumes:
   traefik-public-certificates:
+
