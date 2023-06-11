@@ -3,6 +3,8 @@ FROM tiangolo/uvicorn-gunicorn:python3.11-slim
 
 RUN apt-get update && apt-get install -y netcat
 
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
 # Set working directory
 WORKDIR /app
 
