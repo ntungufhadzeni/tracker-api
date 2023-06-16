@@ -6,7 +6,8 @@ from sqlalchemy import and_, func
 
 def get_all_runs(db: Session):
     now = datetime.now()
-    return db.query(Run).filter(and_(Run.scheduled_end_time > now, Run.vehicle_id != 38)).all()
+    today = datetime.now().date()
+    return db.query(Run).filter(and_(func.date(Run.scheduled_end_time) == today, Run.scheduled_end_time > now, Run.vehicle_id != 38)).all()
 
 def get_runs_by_run_name(db: Session, run_name: str):
     today = datetime.now().date()

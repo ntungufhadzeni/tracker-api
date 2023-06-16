@@ -9,7 +9,6 @@ class Run(BaseModel):
     vehicle_id: str
     latitude: Optional[float] = None
     longitude: Optional[float] = None
-    tracker_id: Optional[int] = None
 
     class Config:
         orm_mode = True
