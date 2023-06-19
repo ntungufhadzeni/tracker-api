@@ -12,6 +12,15 @@ class Run(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class Schedule(BaseModel):
+    name: str
+    scheduled_start_time: datetime
+    scheduled_end_time: datetime
+    vehicle_id: str
+
+    class Config:
+        orm_mode = True
 
 
 

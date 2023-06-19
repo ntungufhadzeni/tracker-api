@@ -61,14 +61,13 @@ def get_db():
         db.close()
 
 
-@app.get("/api/v1/runs", response_model=list[schemas.Run])
+@app.get("/api/v1/runs", response_model=list[schemas.Schedule])
 async def get_all_runs(db: Session = Depends(get_db)):
     runs = crud.get_all_runs(db)
     for run in runs:
         run.scheduled_start_time = run.scheduled_start_time + timedelta(hours=2)
         run.scheduled_end_time = run.scheduled_end_time + timedelta(hours=2)
         run.vehicle_id = rename_vehicle(run.vehicle_id)
-        run.latitude, run.longitude = get_vehicle_position(run.vehicle_id)
     return runs
 
 
