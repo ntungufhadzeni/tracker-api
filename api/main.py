@@ -9,7 +9,7 @@ from datetime import timedelta
 
 base_url = os.getenv("TRACKER_URL")
 
-app = FastAPI()
+api = FastAPI()
 
 
 def rename_vehicle(vehicle_id):
@@ -18,31 +18,31 @@ def rename_vehicle(vehicle_id):
         return '00' + str(vehicle_id)
     elif vehicle_id >= 10:
         return '0' + str(vehicle_id)
-    
 
-def get_vehicle_position(vehicle_id: int):
-    vehicles = { 
-    "007": 9,
-    "015": 10,
-    "014": 12,
-    "012": 13,
-    "013": 14,
-    "005": 15,
-    "018": 16,
-    "008": 17,
-    "003": 18,
-    "016": 19,
-    "004": 20,
-    "011": 22,
-    "001": 23,
-    "002": 24,
-    "020": 26,
-    "010": 27,
-    "009": 28,
-     "017": 29,
-    "021": 30,
-    "006": 36,
-    "019": 41,
+
+def get_vehicle_position(vehicle_id: str):
+    vehicles = {
+        "007": 9,
+        "015": 10,
+        "014": 12,
+        "012": 13,
+        "013": 14,
+        "005": 15,
+        "018": 16,
+        "008": 17,
+        "003": 18,
+        "016": 19,
+        "004": 20,
+        "011": 22,
+        "001": 23,
+        "002": 24,
+        "020": 26,
+        "010": 27,
+        "009": 28,
+        "017": 29,
+        "021": 30,
+        "006": 36,
+        "019": 41,
     }
     res = requests.get(f'{base_url}/positions', auth=(os.getenv("TRACKER_USERNAME"), os.getenv("TRACKER_PASSWORD")))
     devices = res.json()
@@ -61,7 +61,12 @@ def get_db():
         db.close()
 
 
-@app.get("/api/v1/runs", response_model=list[schemas.Schedule])
+@api.get('/')
+def index():
+    return {'Hello': 'Welcome to Leeto Tracker API. Add /docs to view API docs'}
+
+
+@api.get("/api/v1/runs", response_model=list[schemas.Schedule])
 async def get_all_runs(db: Session = Depends(get_db)):
     runs = crud.get_all_runs(db)
     for run in runs:
@@ -71,7 +76,7 @@ async def get_all_runs(db: Session = Depends(get_db)):
     return runs
 
 
-@app.get("/api/v1/runs/{name}", response_model=list[schemas.Run])
+@api.get("/api/v1/runs/{name}", response_model=list[schemas.Run])
 async def get_runs_by_run_name(name: str, db: Session = Depends(get_db)):
     name = ' '.join(name.split("-"))
     runs = crud.get_runs_by_run_name(db, name)

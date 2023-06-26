@@ -1,6 +1,5 @@
-from sqlalchemy import Column, String, Integer, DateTime, Date
-from sqlalchemy.orm import column_property
-from datetime import timedelta
+from sqlalchemy import Column, String, Integer, DateTime
+
 from database import Base
 
 

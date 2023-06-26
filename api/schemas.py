@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+
 class Run(BaseModel):
     name: str
     scheduled_start_time: datetime
@@ -12,7 +13,8 @@ class Run(BaseModel):
 
     class Config:
         orm_mode = True
-        
+
+
 class Schedule(BaseModel):
     name: str
     scheduled_start_time: datetime
@@ -21,7 +23,3 @@ class Schedule(BaseModel):
 
     class Config:
         orm_mode = True
-
-
-
-
