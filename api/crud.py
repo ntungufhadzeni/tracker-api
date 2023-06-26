@@ -7,7 +7,7 @@ from sqlalchemy import and_, func
 
 
 def get_all_runs(db: Session):
-    now = datetime.now() - timedelta(hours=2)
+    now = datetime.now()
     today = datetime.now().date()
     runs = db.query(Run).filter(
         and_(
