@@ -1,7 +1,7 @@
 # Base image
 FROM tiangolo/uvicorn-gunicorn:python3.11-slim
 
-RUN apt-get update && apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat-openbsd
 
 # Set working directory
 WORKDIR /app

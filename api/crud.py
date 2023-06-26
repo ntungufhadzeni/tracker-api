@@ -5,7 +5,7 @@ from sqlalchemy import and_, func
 
 
 def get_all_runs(db: Session):
-    now = datetime.now() - timedelta(hours=2)
+    now = datetime.now()
     today = datetime.now().date()
     return db.query(Run).filter(
         and_(func.date(Run.scheduled_end_time) == today, Run.scheduled_end_time > now, Run.vehicle_id <= 21)).all()
