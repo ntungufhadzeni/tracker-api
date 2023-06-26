@@ -5,15 +5,17 @@
     [entryPoints.web.http.redirections.entryPoint]
       to = "websecure"
       scheme = "https"
-
   [entryPoints.websecure]
     address = ":443"
-
-[accessLog]
 
 [providers]
   [providers.docker]
     exposedByDefault = false
+    watch = true
+    network = "web"
+
+[api]
+  dashboard = true
 
 [certificatesResolvers.letsencrypt.acme]
   email = "mbudzeni@thenakedscientists.co.za"
